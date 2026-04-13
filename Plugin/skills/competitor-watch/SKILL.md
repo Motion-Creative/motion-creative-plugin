@@ -45,8 +45,7 @@ The Motion MCP connector has a different tool prefix for each user. It follows t
 - `get_brand_by_domain` — find brands by domain
 - `get_workspace_brand` — get own brand info
 
-**If no Motion MCP tools are found:** Stop and tell the user: "I couldn't find a Motion MCP connection. Connect your Motion workspace at https://motionapp.com and make sure the MCP connector is enabled, then try again."
-
+**If no Motion MCP tools are found:** Stop and prompt the user to setup the MCP connector using https://projects.motionapp.com/mcp
 ---
 
 ## Phase 1: Setup
@@ -129,7 +128,7 @@ All currently running ads regardless of launch date. This IS their strategy righ
 
 **Query 2: Recently Killed (inactive, paused in last 7 days, no limit)**
 ```
-get_inspo_creatives(brandId, workspaceId, sort="NEWEST", launchDate="LAST_30_DAYS", status="INACTIVE")
+get_inspo_creatives(brandId, workspaceId, sort="NEWEST", limit="100", status="INACTIVE")
 ```
 Pull all inactive ads from the last 30 days, then filter client-side to only those with `pauseDate` within the last 7 days. These are the ads that just got turned off — the freshest kill signals. Ads killed more than 7 days ago are in the baseline already; this week's kills are the delta.
 
@@ -139,7 +138,7 @@ get_inspo_brand_context(brandId, workspaceId)
 ```
 Positioning, voice, strategy signals.
 
-**Pagination strategy:** The API may cap results (typically 50 per call). If you hit the cap:
+**Pagination strategy:** The API may cap results (typically 50 per call). Update the limit field to get more results. If you hit a cap:
 1. First call: `sort="NEWEST"` — gets the most recent ads
 2. Second call: `sort="OLDEST"` — gets the oldest active ads
 3. Merge and deduplicate by creative ID
@@ -203,7 +202,7 @@ Always reason over the *likely* reason. Look at content clues (mentions a date/e
 
 ### 2d. Deep-Dive Prioritization
 
-You can't pull transcripts for every ad. Use this priority:
+You can't pull summaries and transcripts for every ad. Use this priority:
 
 **Always deep-dive (transcript + full analysis) — 5-8 per competitor:**
 - Long-running survivors (15+ days active) — what messaging is actually working?
