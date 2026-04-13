@@ -5,11 +5,5 @@
   "author": {
     "name": "Motion",
     "email": "kyra@motionapp.com"
-  },
-  "skills": "./skills/",
-  "mcpServers": {
-    "motion": {
-      "url": "https://projects.motionapp.com/mcp"
-    }
   }
 }
