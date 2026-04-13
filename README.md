@@ -6,19 +6,9 @@ Think of it as a strategist who knows your account inside and out, ready to work
 
 ---
 
-## Prerequisites
-
-Before installing the plugin, you need:
-
-1. **[Claude Code](https://claude.ai/code)** installed
-2. **The Motion MCP server connected** — this gives Claude Code access to your workspace data. Follow the setup instructions at [help.motionapp.com](https://help.motionapp.com/en/articles/14315735-motion-mcp) or in Motion under **My Account → My Integrations**
-3. **Owner, Admin, or Collaborator permissions** in your Motion workspace
-
-The plugin provides the creative strategy skills. The MCP server provides the data. You need both.
-
----
-
 ## Install
+
+The plugin bundles both the creative strategy skills and the Motion MCP server connection. Install it and you're ready to go — no separate MCP setup needed.
 
 **Option A — Two commands in Claude Code:**
 
@@ -34,7 +24,9 @@ The plugin provides the creative strategy skills. The MCP server provides the da
 
 > Install the Motion Creative plugin from https://github.com/Motion-Creative/motion-creative-plugin
 
-Once installed, run `/customize` to set up your brand, KPIs, competitors, and production constraints. This tailors every command to your workspace.
+When you first use a command, you'll be prompted to authenticate with your Motion account. You need **Owner, Admin, or Collaborator permissions** in your workspace. Don't have an account? You can sign up during authentication and get a 14-day trial.
+
+Once authenticated, run `/customize` to set up your brand, KPIs, competitors, and production constraints. This tailors every command to your workspace.
 
 ---
 
