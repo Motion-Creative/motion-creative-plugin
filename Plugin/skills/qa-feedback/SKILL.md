@@ -9,11 +9,11 @@ description: >
 argument-hint: "<asset URL, screenshot, or creative ID> [--type video|image|static|carousel] [--brief original brief text]"
 allowed-tools:
   - Read
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_glossary_values"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_creative_transcript"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_glossary_values"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_creative_transcript"
 model: opus
 ---
 

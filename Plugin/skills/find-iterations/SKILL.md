@@ -11,15 +11,15 @@ argument-hint: "[--datePreset LAST_30_DAYS] [--limit 10]"
 allowed-tools:
   - Read
   - Agent
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_glossary_values"
-  - "mcp__ruimotion__get_demographic_breakdown"
-  - "mcp__ruimotion__get_workspace_competitors"
-  - "mcp__ruimotion__get_inspo_creatives"
-  - "mcp__ruimotion__get_inspo_brand_context"
-  - "mcp__ruimotion__get_creative_transcript"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_glossary_values"
+  - "mcp__motion__get_demographic_breakdown"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_inspo_creatives"
+  - "mcp__motion__get_inspo_brand_context"
+  - "mcp__motion__get_creative_transcript"
   - AskUserQuestion
 model: opus
 ---

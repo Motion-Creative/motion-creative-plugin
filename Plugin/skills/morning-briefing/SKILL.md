@@ -4,11 +4,11 @@ description: Daily creative delta briefing — what changed overnight in perform
 allowed-tools:
   - Read
   - Agent
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_demographic_breakdown"
-  - "mcp__ruimotion__get_workspace_competitors"
-  - "mcp__ruimotion__get_inspo_creatives"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_demographic_breakdown"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_inspo_creatives"
 model: opus
 ---
 

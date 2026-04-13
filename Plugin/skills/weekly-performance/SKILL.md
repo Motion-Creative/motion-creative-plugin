@@ -11,12 +11,12 @@ argument-hint: "[--output html|notion|slack|pdf|auto]"
 allowed-tools:
   - Read
   - Agent
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_demographic_breakdown"
-  - "mcp__ruimotion__get_glossary_values"
-  - "mcp__ruimotion__get_creative_summary"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_demographic_breakdown"
+  - "mcp__motion__get_glossary_values"
+  - "mcp__motion__get_creative_summary"
   - AskUserQuestion
 model: opus
 ---

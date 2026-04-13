@@ -5,14 +5,14 @@ argument-hint: "[--mode definition|reviews|competitive] [--datePreset LAST_30_DA
 allowed-tools:
   - Read
   - AskUserQuestion
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_demographic_breakdown"
-  - "mcp__ruimotion__get_glossary_values"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_workspace_competitors"
-  - "mcp__ruimotion__get_inspo_brand_context"
-  - "mcp__ruimotion__search_brands"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_demographic_breakdown"
+  - "mcp__motion__get_glossary_values"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_inspo_brand_context"
+  - "mcp__motion__search_brands"
 model: opus
 ---
 
