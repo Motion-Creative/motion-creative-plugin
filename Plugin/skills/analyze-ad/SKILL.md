@@ -13,13 +13,13 @@ description: >
   references a specific creative.
 allowed-tools:
   - Read
-  - mcp__motion__get_auth_context
-  - mcp__motion__get_creative_insights
-  - mcp__motion__get_creative_summary
-  - mcp__motion__get_creative_transcript
-  - mcp__motion__get_demographic_breakdown
-  - mcp__motion__get_workspace_brand
-  - mcp__motion__get_glossary_values
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_creative_summary"
+  - "mcp__motion__get_creative_transcript"
+  - "mcp__motion__get_demographic_breakdown"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_glossary_values"
   - AskUserQuestion
 model: opus
 ---
