@@ -25,7 +25,7 @@ A self-contained weekly competitive scan that any Motion customer can run. Track
 
 **No external context required.** This skill uses only the Motion MCP and stores its own baselines. No repo, no strategy docs, no internal knowledge base needed.
 
-**Core principle:** The value is in the delta, not the state. "[Competitor] launched 6 new Lens-focused ads this week" is intelligence. "[Competitor] has 41 active ads" is a fact sheet. Every finding answers: **"What should I pay attention to this week?"**
+**Core principle:** The value is in the delta, not the state. "Foreplay launched 6 new Lens-focused ads this week" is intelligence. "Foreplay has 41 active ads" is a fact sheet. Every finding answers: **"What should I pay attention to this week?"**
 
 **Baseline model:** First run establishes a baseline. Every subsequent run compares current state to the previous week's baseline, reports what changed, and updates the baseline. Baselines are stored locally as markdown files.
 
@@ -35,7 +35,7 @@ A self-contained weekly competitive scan that any Motion customer can run. Track
 
 ### 1a. Parse Arguments
 
-- `--competitor`: Optional. A domain (e.g., `competitor.com`) to scan a single competitor. If omitted, scan all saved competitors.
+- `--competitor`: Optional. A domain (e.g., `foreplay.co`) to scan a single competitor. If omitted, scan all saved competitors.
 - `--baseline-only`: Establish baselines without producing a delta report. Use for first run.
 
 ### 1b. Resolve Workspace
@@ -211,7 +211,7 @@ Group ads into clusters that reveal the creative strategy:
 
 - **Test clusters:** Ads with same messaging angle but different hooks, formats, or creators. Name the bet: "They're testing whether UGC outperforms screen recordings for their analytics feature."
 - **Promotional intel:** Events, free trials, discounts, webinars, partnerships, product launches?
-- **Sub-product detection:** If a competitor's ads drive to multiple domains or products (e.g., main site + a secondary product), analyze each product's messaging separately. A company running two businesses through one ad account is a different signal than a single-product company.
+- **Sub-product detection:** If a competitor's ads drive to multiple domains or products (e.g., superside.com + superads.ai), analyze each product's messaging separately. A company running two businesses through one ad account is a different signal than a single-product company.
 
 ### 2f. Competitive Evaluation
 
