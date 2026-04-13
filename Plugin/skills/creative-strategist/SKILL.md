@@ -8,7 +8,6 @@ description: >
   or when no action skill matches. For specific tasks, route to: analyze-ad,
   performance-analysis, create-concepts, build-brief, write-hooks, find-iterations,
   industry-trends, qa-feedback, weekly-performance, etc.
-version: 0.2.0
 ---
 
 # Creative Strategist
