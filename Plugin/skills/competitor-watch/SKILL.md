@@ -5,11 +5,17 @@ argument-hint: "[--competitor domain.com] [--baseline-only]"
 allowed-tools:
   - Read
   - Write
-  - Bash
   - Glob
   - Agent
   - AskUserQuestion
-  - ToolSearch
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_inspo_creatives"
+  - "mcp__motion__get_creative_transcript"
+  - "mcp__motion__get_inspo_brand_context"
+  - "mcp__motion__search_brands"
+  - "mcp__motion__get_brand_by_domain"
+  - "mcp__motion__get_workspace_brand"
 model: opus
 ---
 
@@ -19,33 +25,9 @@ A self-contained weekly competitive scan that any Motion customer can run. Track
 
 **No external context required.** This skill uses only the Motion MCP and stores its own baselines. No repo, no strategy docs, no internal knowledge base needed.
 
-**Core principle:** The value is in the delta, not the state. "Foreplay launched 6 new Lens-focused ads this week" is intelligence. "Foreplay has 41 active ads" is a fact sheet. Every finding answers: **"What should I pay attention to this week?"**
+**Core principle:** The value is in the delta, not the state. "[Competitor] launched 6 new Lens-focused ads this week" is intelligence. "[Competitor] has 41 active ads" is a fact sheet. Every finding answers: **"What should I pay attention to this week?"**
 
 **Baseline model:** First run establishes a baseline. Every subsequent run compares current state to the previous week's baseline, reports what changed, and updates the baseline. Baselines are stored locally as markdown files.
-
----
-
-## Phase 0: Discover Motion MCP Connector
-
-The Motion MCP connector has a different tool prefix for each user. It follows the pattern `mcp__<uuid>__<tool_name>` where the UUID varies by installation (e.g., `mcp__7fa9f3c0-457b-4a74-a671-2a3f0c40b6fe__get_auth_context`).
-
-**Before doing anything else, discover the connector:**
-
-1. Use ToolSearch to find the Motion MCP tools: search for `get_auth_context` — this is a Motion-specific tool name
-2. From the result, extract the full tool prefix (everything before `get_auth_context`). This is your connector prefix for this user's session.
-3. Store the prefix and use it for ALL subsequent Motion MCP calls in this run.
-
-**The Motion MCP tools you need (append each to the discovered prefix):**
-- `get_auth_context` — resolve workspace
-- `get_workspace_competitors` — list tracked competitors
-- `get_inspo_creatives` — pull ad library data
-- `get_creative_transcript` — get video ad transcripts
-- `get_inspo_brand_context` — brand positioning data
-- `search_brands` — find brands by name
-- `get_brand_by_domain` — find brands by domain
-- `get_workspace_brand` — get own brand info
-
-**If no Motion MCP tools are found:** Stop and tell the user: "I couldn't find a Motion MCP connection. Connect your Motion workspace at https://motionapp.com and make sure the MCP connector is enabled, then try again."
 
 ---
 
@@ -53,12 +35,12 @@ The Motion MCP connector has a different tool prefix for each user. It follows t
 
 ### 1a. Parse Arguments
 
-- `--competitor`: Optional. A domain (e.g., `foreplay.co`) to scan a single competitor. If omitted, scan all saved competitors.
+- `--competitor`: Optional. A domain (e.g., `competitor.com`) to scan a single competitor. If omitted, scan all saved competitors.
 - `--baseline-only`: Establish baselines without producing a delta report. Use for first run.
 
 ### 1b. Resolve Workspace
 
-Using the discovered connector prefix, call `get_auth_context()`.
+Call `get_auth_context()`.
 
 If multiple workspaces exist, ask the user which one to scan. Store the workspaceId for all subsequent calls.
 
@@ -229,7 +211,7 @@ Group ads into clusters that reveal the creative strategy:
 
 - **Test clusters:** Ads with same messaging angle but different hooks, formats, or creators. Name the bet: "They're testing whether UGC outperforms screen recordings for their analytics feature."
 - **Promotional intel:** Events, free trials, discounts, webinars, partnerships, product launches?
-- **Sub-product detection:** If a competitor's ads drive to multiple domains or products (e.g., superside.com + superads.ai), analyze each product's messaging separately. A company running two businesses through one ad account is a different signal than a single-product company.
+- **Sub-product detection:** If a competitor's ads drive to multiple domains or products (e.g., main site + a secondary product), analyze each product's messaging separately. A company running two businesses through one ad account is a different signal than a single-product company.
 
 ### 2f. Competitive Evaluation
 
