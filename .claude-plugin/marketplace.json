@@ -1,0 +1,11 @@
+{
+  "name": "motion-mcp",
+  "description": "Motion creative analytics plugins for Claude Code",
+  "plugins": [
+    {
+      "name": "motion-creative",
+      "description": "Creative strategy intelligence for Motion. Analyzes creative performance, competitor activity, generates data-driven concepts, writes hooks, produces UGC scripts, and delivers weekly performance decks — all grounded in your workspace data.",
+      "path": "./Plugin"
+    }
+  ]
+}
