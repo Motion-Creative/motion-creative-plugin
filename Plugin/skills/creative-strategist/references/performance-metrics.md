@@ -14,10 +14,16 @@ Each `insightType` in Motion's `get_creative_insights` sorts and surfaces creati
 **What movement signals:** The algorithm is finding more efficient pockets for this creative, or a media buyer is actively scaling it.
 **Watch for:** Scaling creatives are the ones to watch. A creative that's scaling with stable ROAS is the best signal in the account. Scaling + declining ROAS = hitting saturation.
 
-### HOOK
-**What it measures:** Thumbstop rate — the percentage of viewers who stop scrolling to watch. First-3-seconds effectiveness.
+### HOOK (= Thumbstop Rate)
+**What it measures:** Thumbstop rate (`thumbstop_ratio`) — the percentage of viewers who stop scrolling to watch. First-3-seconds effectiveness. Note: the `hook_rate` field in the API is not populated; always use `thumbstop_ratio` as the hook rate metric. Present this to users as "hook rate" — they don't need to know the underlying field name.
 **What "good" looks like:** Highly category-dependent. Compare within your own account, not against industry benchmarks.
-**Watch for:** High HOOK + low CPA = strong creative that converts. High HOOK + high CPA = attention without action — the hook promises something the ad doesn't deliver. Low HOOK = the opening isn't working, regardless of what follows.
+**Watch for:** High hook rate + low CPA = strong creative that converts. High hook rate + high CPA = attention without action — the hook promises something the ad doesn't deliver. Low hook rate = the opening isn't working, regardless of what follows.
+**Important:** The HOOK insightType returns the same ranking as SCALING. To find actual top hook performers, pull SPEND with limit=20, filter to video creatives, and sort by `thumbstop_ratio` descending.
+
+### Hold Rate (= Thruplay Rate)
+**What it measures:** `video_thruplay_ratio` — the percentage of viewers who watched the video to completion (or 15 seconds, whichever comes first). Measures whether the creative holds attention after the hook. Note: the `hold_rate` field in the API is not populated; always use `video_thruplay_ratio` as the hold rate metric. Present this to users as "hold rate" — they don't need to know the underlying field name.
+**What "good" looks like:** Category-dependent. Higher is better — it means the content after the hook is delivering on the promise.
+**Watch for:** High hook rate + high hold rate = opening promises and delivers. High hook rate + low hold rate = hook grabs but middle doesn't pay off. When `video_thruplay_ratio` is unavailable, fall back to video retention percentiles (`video_p25_watched_ratio`, `video_p50_watched_ratio`, `video_p75_watched_ratio`).
 
 ### ROAS
 **What it measures:** Return on ad spend — revenue generated per dollar spent.
@@ -54,9 +60,11 @@ Each `insightType` in Motion's `get_creative_insights` sorts and surfaces creati
 |---|---|---|
 | High SPEND + high ROAS + SCALING | Best creative in account — proven and growing | Protect and iterate |
 | High SPEND + declining ROAS | Scaling past efficiency — fatigue or saturation | Consider pausing or refreshing |
-| High HOOK + low CPA | Strong creative that hooks and converts | Scale aggressively |
-| High HOOK + high CPA | Attention without action — hook/body disconnect | Rework the body/CTA, keep the hook |
-| Low HOOK + low CPA | Weak hook but converts whoever sees it | Test new hooks on the same body |
+| High hook rate + low CPA | Strong creative that hooks and converts | Scale aggressively |
+| High hook rate + high CPA | Attention without action — hook/body disconnect | Rework the body/CTA, keep the hook |
+| Low hook rate + low CPA | Weak hook but converts whoever sees it | Test new hooks on the same body |
+| High hook rate + high hold rate | Opening promises and delivers — viewers feel rewarded | Scale and iterate on the angle |
+| High hook rate + low hold rate | Hook grabs but middle doesn't pay off — viewers feel baited | Rework the body, keep the hook |
 | High ROAS + low SPEND | Underexploited gem — efficient but not scaling | Increase budget, test in new audiences |
 | SCALING + stable ROAS | The best signal — growing without losing efficiency | Scale and monitor |
 | SCALING + declining ROAS | Hitting saturation — growing past its audience | Cap spend, find new angles |

@@ -28,7 +28,7 @@ Creative Strategist is the reasoning methodology for motion-creative. It defines
 Not all metrics are relevant for every creative. Choose what to surface based on:
 
 **By creative format:**
-- Video → include hook/thumbstop, video retention, hold rate
+- Video → include hook rate (thumbstop_ratio), video retention, hold rate (video_thruplay_ratio)
 - Static/carousel → skip hook metrics, focus on CTR, engagement
 
 **By campaign objective** (infer from campaignName heuristics):
@@ -70,7 +70,7 @@ Every performance analysis follows this structure:
 
 ### Layer 1: Multi-Metric Landscape
 
-Pull multiple insightType dimensions simultaneously — SPEND, SCALING, goalMetric, HOOK at minimum. A creative that scales on spend but tanks on goalMetric is a different signal than one that's efficient but not scaling. Single-metric views lie.
+Pull multiple insightType dimensions simultaneously — SPEND, SCALING, goalMetric at minimum. For hook rate analysis, filter SPEND results to video creatives and sort by `thumbstop_ratio` (do NOT use insightType="HOOK" — it returns the same ranking as SCALING). A creative that scales on spend but tanks on goalMetric is a different signal than one that's efficient but not scaling. Single-metric views lie.
 
 For each creative, build a composite view: where does it rank on spend? Is it scaling or declining? What's its efficiency? Does it hook viewers? Cross-referencing reveals the full picture.
 
@@ -180,7 +180,7 @@ Creative framing is how you adapt messaging direction for a specific context —
 
 Direct. Strategic. Creative-team-friendly. Short sentences. Specific data points. Every sentence earns its place.
 
-"Your hook rate dropped 15% this week — the top 3 scaling creatives all use problem-agitation hooks, not testimonials" not "Performance metrics indicate a decline in initial engagement rates across the creative portfolio."
+"Your hook rate (thumbstop) dropped 15% this week — the top 3 scaling creatives all use problem-agitation hooks, not testimonials" not "Performance metrics indicate a decline in initial engagement rates across the creative portfolio."
 
 Don't point out weaknesses without recommending what to do instead. Don't lead with caveats. Don't soften bad news.
 

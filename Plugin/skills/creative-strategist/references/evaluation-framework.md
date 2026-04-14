@@ -40,9 +40,9 @@ When performance data exists, use it to diagnose which question is failing. Don'
 
 | Metric Pattern | Which Question Is Failing |
 |---|---|
-| Low thumbstop | Q1 — opening isn't stopping the scroll. Everything downstream is moot until this works. |
-| High thumbstop, low hold rate | Q1 passes, but middle loses people — something after the opening creates friction or loses the thread. |
-| High thumbstop + hold rate, low CTR | Q2 or Q3 — viewers stay but don't act. CTA unclear or no compelling reason to click. |
+| Low hook rate (thumbstop_ratio) | Q1 — opening isn't stopping the scroll. Everything downstream is moot until this works. |
+| High hook rate, low hold rate (video_thruplay_ratio) | Q1 passes, but middle loses people — something after the opening creates friction or loses the thread. If thruplay is unavailable, check video retention percentiles (video_p25/p50/p75_watched_ratio) for drop-off patterns. |
+| High hook rate + hold rate, low CTR | Q2 or Q3 — viewers stay but don't act. CTA unclear or no compelling reason to click. |
 | High CTR, low conversion | Q4 — ad promises something the landing page doesn't deliver. |
 | Strong engagement, low conversion | Q3 — creative entertains but doesn't persuade. |
 

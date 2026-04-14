@@ -100,9 +100,9 @@ Go beyond what the numbers say — explain WHY this creative performs the way it
 - "This is the only creative using problem-agitation hooks — and it's your top ROAS performer."
 
 **If the creative is underperforming**, diagnose using the 4-Question metric correlations from `evaluation-framework.md`:
-- Low thumbstop → Q1 failing (doesn't make sense fast). Everything downstream is moot until this works.
-- High thumbstop + low hold rate → Q1 passes but middle loses people. Something after the opening creates friction or loses the thread.
-- High thumbstop + hold rate, low CTR → Q2 or Q3 failing. Viewers stay but don't act — CTA unclear or no compelling reason to click.
+- Low hook rate (thumbstop_ratio) → Q1 failing (doesn't make sense fast). Everything downstream is moot until this works.
+- High hook rate + low hold rate (video_thruplay_ratio) → Q1 passes but middle loses people. Something after the opening creates friction or loses the thread. If thruplay is unavailable, check video retention percentiles (video_p25/p50/p75_watched_ratio).
+- High hook rate + hold rate, low CTR → Q2 or Q3 failing. Viewers stay but don't act — CTA unclear or no compelling reason to click.
 - High CTR + low conversion → Q4 failing. Ad promises something the landing page doesn't deliver.
 - Strong engagement + low conversion → Q3 failing. Creative entertains but doesn't persuade.
 - Declining spend + stable metrics → algorithm deprioritizing — audience saturation, needs refresh (not a Q1-Q4 issue).

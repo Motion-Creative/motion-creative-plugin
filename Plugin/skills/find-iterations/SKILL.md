@@ -75,7 +75,7 @@ If the user already specified what they want to iterate on, skip questions.
 
 3. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset, limit)` — efficiency leaders by workspace goal metric
 4. `get_creative_insights(workspaceId, insightType="SCALING", datePreset, limit)` — momentum
-5. `get_creative_insights(workspaceId, insightType="HOOK", datePreset, limit)` — attention capture
+5. For hook rate leaders: filter SPEND results (call #1) to video creatives and sort by `thumbstop_ratio` descending. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING.
 6. `get_glossary_values(workspaceId, includeCreativeIds=true)` — creative taxonomy
 7. `get_demographic_breakdown(workspaceId, datePreset)` — audience breakdown
 8. `get_workspace_brand(workspaceId)` — brand context

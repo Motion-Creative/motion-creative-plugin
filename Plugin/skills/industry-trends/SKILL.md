@@ -65,7 +65,7 @@ Read the creative-strategist skill for the competitive intelligence framework.
 
 For each competitor, dispatch in parallel:
 
-1. `get_inspo_creatives(brandId, workspaceId, limit=10, sort="NEWEST", launchDate=mapped_preset, status="ACTIVE")` — recent active ads
+1. `get_inspo_creatives(brandId, workspaceId, limit=500, sort="NEWEST", launchDate=mapped_preset, status="ACTIVE")` — recent active ads. **Always set limit=500.** The API defaults to ~20 if omitted, which produces incomplete and misleading analysis.
 2. `get_inspo_brand_context(brandId, workspaceId)` — brand positioning, voice, strategy
 
 ### 2c. Pull Transcripts

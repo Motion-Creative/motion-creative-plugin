@@ -148,8 +148,8 @@ Every finding must answer "so what?" — translate metrics into viewer behavior:
 
 | Signal | What It Means |
 |---|---|
-| High thumbstop + high hold rate | Opening promises and delivers. Viewers feel rewarded. |
-| High thumbstop + low hold rate | Hook grabs but middle doesn't pay off. Viewers feel baited. |
+| High hook rate (thumbstop_ratio) + high hold rate (video_thruplay_ratio) | Opening promises and delivers. Viewers feel rewarded. |
+| High hook rate (thumbstop_ratio) + low hold rate (video_thruplay_ratio) | Hook grabs but middle doesn't pay off. Viewers feel baited. If video_thruplay_ratio is unavailable, use video retention percentiles (video_p25/p50/p75_watched_ratio) to assess hold. |
 | High CTR + low conversion | Ad sells the click but landing page doesn't close. |
 | Spend increasing | Algorithm found evidence it works. Winning auctions. |
 | Spend decreasing | Creative exhausting its audience or losing auctions. |

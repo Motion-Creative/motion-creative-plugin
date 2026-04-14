@@ -8,6 +8,7 @@ allowed-tools:
   - Glob
   - Agent
   - AskUserQuestion
+  - ToolSearch
   - "mcp__motion__get_auth_context"
   - "mcp__motion__get_workspace_competitors"
   - "mcp__motion__get_inspo_creatives"
@@ -16,6 +17,11 @@ allowed-tools:
   - "mcp__motion__search_brands"
   - "mcp__motion__get_brand_by_domain"
   - "mcp__motion__get_workspace_brand"
+  - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_create_canvas
+  - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_send_message
+  - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_search_channels
+  - mcp__scheduled-tasks__create_scheduled_task
+  - mcp__scheduled-tasks__list_scheduled_tasks
 model: opus
 ---
 
@@ -101,31 +107,38 @@ For each competitor, dispatch in parallel:
 
 ### 2a. Pull Ad Data (Queries per Competitor)
 
-**No limits.** Pull everything — don't sample. Paginate if responses hit the API ceiling.
+**CRITICAL: Always set `limit=500` on every `get_inspo_creatives` call.** The API defaults to ~20-50 results if you omit the limit or set it low. Setting limit=500 ensures you get the full portfolio in one call for most brands. This is non-negotiable — partial data produces wrong analysis.
 
-**Query 1: Full Active Portfolio (ALL active ads, no limit)**
-```
-get_inspo_creatives(brandId, workspaceId, sort="NEWEST", status="ACTIVE")
-```
-All currently running ads regardless of launch date. This IS their strategy right now. Do NOT set a limit — get every active ad. If the response is capped by the API, paginate with additional calls (e.g., sort="OLDEST" to get the other end) until you have the full set.
+**MANDATORY: Two-pass pull for every brand.** Even with limit=500, always pull NEWEST and OLDEST and merge. This catches edge cases where the API caps results.
 
-**Query 2: Recently Killed (inactive, paused in last 7 days, no limit)**
+For each competitor, run these queries in parallel:
+
+**Query 1a: Active Portfolio — NEWEST first**
 ```
-get_inspo_creatives(brandId, workspaceId, sort="NEWEST", launchDate="LAST_30_DAYS", status="INACTIVE")
+get_inspo_creatives(brandId, workspaceId, sort="NEWEST", status="ACTIVE", limit=500)
 ```
-Pull all inactive ads from the last 30 days, then filter client-side to only those with `pauseDate` within the last 7 days. These are the ads that just got turned off — the freshest kill signals. Ads killed more than 7 days ago are in the baseline already; this week's kills are the delta.
+
+**Query 1b: Active Portfolio — OLDEST first (same call, different sort)**
+```
+get_inspo_creatives(brandId, workspaceId, sort="OLDEST", status="ACTIVE", limit=500)
+```
+
+**Query 2: Recently Killed**
+```
+get_inspo_creatives(brandId, workspaceId, sort="NEWEST", status="INACTIVE", limit=500)
+```
+Filter client-side to only those with `pauseDate` within the last 7 days.
 
 **Query 3: Brand Context**
 ```
 get_inspo_brand_context(brandId, workspaceId)
 ```
-Positioning, voice, strategy signals.
 
-**Pagination strategy:** The API may cap results (typically 50 per call). If you hit the cap:
-1. First call: `sort="NEWEST"` — gets the most recent ads
-2. Second call: `sort="OLDEST"` — gets the oldest active ads
-3. Merge and deduplicate by creative ID
-4. Repeat until you have the full set or diminishing returns (same ads appearing)
+**After pulling, merge and deduplicate** Query 1a + 1b by creative `_id`. The merged set is the full active portfolio. Log the count.
+
+**Validation gate:** Before proceeding to analysis, verify the ad count matches expectations. If a brand shows `activeAdCount` in its metadata (from workspace competitors or search_brands), compare your pulled count against it. If your count is significantly lower, you missed ads — paginate further or increase the limit.
+
+**NEVER set limit below 500. NEVER omit the limit parameter (it defaults too low). NEVER skip the OLDEST pass.**
 
 ### 2b. Full Active Portfolio Analysis
 
@@ -185,7 +198,7 @@ Always reason over the *likely* reason. Look at content clues (mentions a date/e
 
 ### 2d. Deep-Dive Prioritization
 
-You can't pull transcripts for every ad. Use this priority:
+You can't pull summaries and transcripts for every ad. Use this priority:
 
 **Always deep-dive (transcript + full analysis) — 5-8 per competitor:**
 - Long-running survivors (15+ days active) — what messaging is actually working?
@@ -232,9 +245,13 @@ Run the same analysis on your own brand's ads. This creates the comparison frame
 
 ### 3a. Pull Own-Brand Data
 
-Use the brandId from `get_workspace_brand`. Pull the same queries as competitors:
-- ALL active ads (no limit, paginate with NEWEST + OLDEST if needed)
-- Inactive ads from last 30 days, filtered to pauseDate within last 7 days
+Use the brandId from `get_workspace_brand`. Pull the EXACT same way as competitors — **limit=500, two-pass NEWEST+OLDEST, merge and deduplicate:**
+```
+get_inspo_creatives(brandId, workspaceId, sort="NEWEST", status="ACTIVE", limit=500)
+get_inspo_creatives(brandId, workspaceId, sort="OLDEST", status="ACTIVE", limit=500)
+get_inspo_creatives(brandId, workspaceId, sort="NEWEST", status="INACTIVE", limit=500)
+```
+Merge active pulls by `_id`. Filter inactive to pauseDate within last 7 days. **Do NOT use a lower limit for your own brand than competitors.**
 
 ### 3b. Analyze the Same Way
 
@@ -374,7 +391,9 @@ the solopreneur burnout angle that's been running 27 days for [competitor]."]
 
 - **Lead with "What Changed."** If someone reads only the first section, they get the important stuff.
 - **Delta-first on repeat runs.** Don't report state — report change. "No changes" = skip or one line.
+- **Assume the reader knows the competitive landscape.** Don't explain what Foreplay or Superads are. Don't summarize product categories. The team follows this space — they want the specific tactical insight they'd miss without pulling the data. Prioritize: survival signals (what's been running 60+ days and why), test cluster patterns (what they're A/B testing and what it implies), format/production shifts, and messaging angles that directly compete with Motion's positioning.
 - **Quote actual hooks.** Don't summarize when you can quote.
+- **Include specific numbers everywhere.** "27 days active", "6 variants launched same day", "72% image vs 28% video", "109 active ads". Specificity = credibility. Vague = skimmable.
 - **Carry the competitor data caveat.** You're reading bets, not results. Frame as "they're testing this" not "this is working for them." The only proven patterns come from your own performance data.
 - **Recommendations must be specific.** "Test a confessional UGC ad where a creator admits a frustration with analytics tools before showing your product" not "consider UGC."
 - **Length:** 5-minute read max. If the market is quiet, make it 2 minutes.
@@ -443,6 +462,69 @@ last_scanned: [YYYY-MM-DD]
 - **Few/no ads returned:** Note thin data, don't over-interpret. Suggest expanding to LAST_90_DAYS
 - **No previous baseline:** Treat as first run, produce a full landscape report, label as "Baseline Established"
 - **Transcript quality poor:** Some transcripts return garbage (single words, unrelated text). If a transcript doesn't make sense, skip it and note the gap. Don't quote bad transcripts.
+
+---
+
+## Phase 7: Slack Distribution + Schedule Prompt
+
+After producing the report and updating baselines, deliver it to the team and prompt for recurring scheduling.
+
+### 7a. Build the Slack Canvas
+
+Create a Slack canvas containing the **full competitor watch report** using `slack_create_canvas`:
+- Title: `Competitor Watch — [YYYY-MM-DD]`
+- Content: The entire Phase 5 report output, formatted as Canvas-flavored Markdown
+
+### 7b. Write the Slack Message
+
+Craft a short, high-signal Slack message that makes people want to open the canvas. This is NOT a summary — it's a teaser.
+
+**Structure:**
+```
+🔍 *Competitor Watch — [Date]*
+
+[One punchy headline: the single most surprising or actionable finding. Make it specific and provocative enough that someone stops scrolling.]
+
+*Top signals this week:*
+• [Insight 1 — the sharpest competitive move. Quote a specific hook or claim. Name the competitor.]
+• [Insight 2 — something that directly affects your team's next creative decisions]
+
+Full report → [canvas will auto-attach]
+```
+
+**Rules for the message:**
+- **Max 4-5 lines.** This is a hook, not the report.
+- **Assume the team already knows what competitors exist and roughly what they do.** "Superside launched Superads" is not news to this team. They follow the space. What IS news: a specific tactical move, a messaging shift, a survival signal, or a pattern nobody would notice without pulling the data.
+- **Lead with the deepest, most specific insight** — the thing someone would only know if they'd pulled 100+ ads and analyzed survival cohorts. Examples of GOOD insights:
+  - "Foreplay's vertical hook 'Supplement brands, if you run ads on Facebook...' just hit 27 days active — the only industry-specific ad surviving past the testing zone in this entire category"
+  - "Atria launched 6 identical-copy Raya ads on the same day with different video — they're not testing messaging, they're testing which creator converts on a single script"
+  - "Superside's UGC creators are ONLY used for Superads ads — their enterprise brand runs zero UGC across 94 ads, which means they see UGC as a SMB tactic"
+  - "Motion's 3 oldest active ads (136 days) are all static image content marketing — the same format Superside's longest survivors use. Video dominates new launches but static survives longer."
+- **BAD insights (too obvious, skip these):** "Competitor X launched a new product", "Everyone is using video", "AI is a trend in the category", "[Brand] is running ads"
+- **Quote actual hooks and include specific numbers** — days active, ad counts, survival rates. "Foreplay's founder story has run 70 days across 3 variants" is 10x more compelling than "Foreplay uses founder stories."
+- **Create an information gap** — hint at pattern-level findings in the canvas without fully resolving them. Make the reader think "wait, really?" and click through.
+- **No emojis beyond the 🔍 opener.** Keep it clean and professional.
+- **No "here's what we found" preamble.** Jump straight into the insight.
+
+### 7c. Send to Slack
+
+1. Read the Slack channel from settings (`slack_channel_id`). If not configured, ask which channel to post to.
+2. Create the canvas with `slack_create_canvas`
+3. Post the teaser message to the channel with the canvas link using `slack_send_message`. **Ask the user for permission before sending.**
+
+### 7d. Prompt for Weekly Schedule
+
+After the first successful run, ask the user if they want this automated:
+
+> "Want me to run this every Monday morning and post to [channel]? I'll scan all competitors, generate the report, and drop the highlights in Slack automatically."
+
+If yes, create a scheduled task:
+- **Task ID:** `competitor-watch-weekly`
+- **Schedule:** Monday mornings (cron: `0 9 * * 1` — 9am local)
+- **Prompt:** The full competitor-watch skill execution including Slack delivery
+- **Description:** "Weekly competitor intelligence scan — posts highlights + full canvas to Slack"
+
+Only prompt for scheduling on the **first run** or if no `competitor-watch-weekly` task exists. On subsequent runs, just deliver silently.
 
 ---
 

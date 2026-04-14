@@ -62,7 +62,7 @@ If no asset is provided, ask the user what they want reviewed.
 3. `get_workspace_brand(workspaceId)` — brand guidelines, voice, positioning, do's/don'ts
 4. `get_glossary_values(workspaceId)` — creative taxonomy categories
 5. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset="LAST_30_DAYS", limit=5)` — efficiency leaders by workspace goal metric for comparison
-6. `get_creative_insights(workspaceId, insightType="HOOK", datePreset="LAST_30_DAYS", limit=5)` — best hooks for comparison
+6. For hook rate leaders: filter SPEND results (call #5) to video creatives and sort by `thumbstop_ratio` descending to find the best hooks for comparison. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING.
 
 If the asset is a video with a creative entity ID:
 7. `get_creative_transcript(creativeEntityId, creativeOrigin)` — pull the transcript for detailed review
