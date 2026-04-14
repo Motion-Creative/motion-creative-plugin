@@ -5,11 +5,18 @@ argument-hint: "[--competitor domain.com] [--baseline-only]"
 allowed-tools:
   - Read
   - Write
-  - Bash
   - Glob
   - Agent
   - AskUserQuestion
   - ToolSearch
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_inspo_creatives"
+  - "mcp__motion__get_creative_transcript"
+  - "mcp__motion__get_inspo_brand_context"
+  - "mcp__motion__search_brands"
+  - "mcp__motion__get_brand_by_domain"
+  - "mcp__motion__get_workspace_brand"
   - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_create_canvas
   - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_send_message
   - mcp__a8f5bb61-0837-408d-a165-744ad0d8d236__slack_search_channels
@@ -30,29 +37,6 @@ A self-contained weekly competitive scan that any Motion customer can run. Track
 
 ---
 
-## Phase 0: Discover Motion MCP Connector
-
-The Motion MCP connector has a different tool prefix for each user. It follows the pattern `mcp__<uuid>__<tool_name>` where the UUID varies by installation (e.g., `mcp__7fa9f3c0-457b-4a74-a671-2a3f0c40b6fe__get_auth_context`).
-
-**Before doing anything else, discover the connector:**
-
-1. Use ToolSearch to find the Motion MCP tools: search for `get_auth_context` — this is a Motion-specific tool name
-2. From the result, extract the full tool prefix (everything before `get_auth_context`). This is your connector prefix for this user's session.
-3. Store the prefix and use it for ALL subsequent Motion MCP calls in this run.
-
-**The Motion MCP tools you need (append each to the discovered prefix):**
-- `get_auth_context` — resolve workspace
-- `get_workspace_competitors` — list tracked competitors
-- `get_inspo_creatives` — pull ad library data
-- `get_creative_transcript` — get video ad transcripts
-- `get_inspo_brand_context` — brand positioning data
-- `search_brands` — find brands by name
-- `get_brand_by_domain` — find brands by domain
-- `get_workspace_brand` — get own brand info
-
-**If no Motion MCP tools are found:** Stop and prompt the user to setup the MCP connector using https://projects.motionapp.com/mcp
----
-
 ## Phase 1: Setup
 
 ### 1a. Parse Arguments
@@ -62,7 +46,7 @@ The Motion MCP connector has a different tool prefix for each user. It follows t
 
 ### 1b. Resolve Workspace
 
-Using the discovered connector prefix, call `get_auth_context()`.
+Call `get_auth_context()`.
 
 If multiple workspaces exist, ask the user which one to scan. Store the workspaceId for all subsequent calls.
 

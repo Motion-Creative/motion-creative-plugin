@@ -9,11 +9,11 @@ description: >
 argument-hint: "[product] [pain/desire] [persona] [--stage problem-aware] [--format video] [--count 10]"
 allowed-tools:
   - Read
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_creative_transcript"
-  - "mcp__ruimotion__get_glossary_values"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_creative_transcript"
+  - "mcp__motion__get_glossary_values"
   - AskUserQuestion
 model: opus
 ---
@@ -75,10 +75,10 @@ If any required input is missing, ask the user before proceeding.
    - Brand guidelines: pull from `get_workspace_brand`
 2. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/SKILL.md` for methodology.
 3. Use `default_date_preset` from settings as the datePreset for all calls unless the user specified a date range.
-3. Read `${CLAUDE_SKILL_DIR}/references/hook-tactics.md` for the 35+ tactic library.
-4. Read `${CLAUDE_SKILL_DIR}/references/hook-voice-patterns.md` for proven template clusters.
-5. Read `${CLAUDE_SKILL_DIR}/references/hook-sources.md` for pain-based hook material. Pain points are the most reliable hook source — start here before trying other angles.
-6. Read `${CLAUDE_SKILL_DIR}/references/hook-eval-judge.md` for the 5-test quality bar and calibrated examples.
+4. Read `${CLAUDE_SKILL_DIR}/references/hook-tactics.md` for the 35+ tactic library.
+5. Read `${CLAUDE_SKILL_DIR}/references/hook-voice-patterns.md` for proven template clusters.
+6. Read `${CLAUDE_SKILL_DIR}/references/hook-sources.md` for pain-based hook material. Pain points are the most reliable hook source — start here before trying other angles.
+7. Read `${CLAUDE_SKILL_DIR}/references/hook-eval-judge.md` for the 5-test quality bar and calibrated examples.
 
 ### 1c. Pull Performance Data (Parallel)
 

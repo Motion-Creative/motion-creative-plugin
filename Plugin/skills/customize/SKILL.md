@@ -10,10 +10,10 @@ allowed-tools:
   - Write
   - Edit
   - AskUserQuestion
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_workspace_competitors"
-  - "mcp__ruimotion__get_glossary_values"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_workspace_competitors"
+  - "mcp__motion__get_glossary_values"
 model: opus
 ---
 

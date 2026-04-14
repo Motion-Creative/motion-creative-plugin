@@ -490,7 +490,7 @@ Visual format selection is an execution decision. The Creative Strategy Engine d
 
 ---
 
-## PART 6: PUTTING IT ALL TOGETHER
+## PART 7: PUTTING IT ALL TOGETHER
 
 ## The Creative Matrix
 

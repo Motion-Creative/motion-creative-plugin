@@ -8,7 +8,6 @@ description: >
   or when no action skill matches. For specific tasks, route to: analyze-ad,
   performance-analysis, create-concepts, build-brief, write-hooks, find-iterations,
   industry-trends, qa-feedback, weekly-performance, etc.
-version: 0.2.0
 ---
 
 # Creative Strategist
@@ -35,8 +34,8 @@ Not all metrics are relevant for every creative. Choose what to surface based on
 **By campaign objective** (infer from campaignName heuristics):
 - Awareness/reach campaigns ("Awareness", "Reach", "Brand") → CPM, impressions, frequency, thumbstop (video)
 - Traffic campaigns ("Traffic", "Clicks", "LP Views") → CPC, CTR, landing page views
-- Conversion/purchase campaigns ("Conversions", "CBO", "ABO", "Purchase", "Scaling") → goalMetric, ROAS, CPA, purchases, purchase_value
-- Engagement → CTR, engagement_rate, video views
+- Conversion/purchase campaigns ("Conversions", "Purchase", "Scaling") → goalMetric, ROAS, CPA, purchases, purchase_value
+- Engagement ("Video views", engagement") → CTR, engagement_rate, video views
 
 **By goalMetric:**
 - Use as the primary efficiency metric for the workspace

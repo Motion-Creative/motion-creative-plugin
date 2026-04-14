@@ -9,11 +9,11 @@ description: >
 argument-hint: "<asset URL, screenshot, or creative ID> [--type video|image|static|carousel] [--brief original brief text]"
 allowed-tools:
   - Read
-  - "mcp__ruimotion__get_auth_context"
-  - "mcp__ruimotion__get_workspace_brand"
-  - "mcp__ruimotion__get_glossary_values"
-  - "mcp__ruimotion__get_creative_insights"
-  - "mcp__ruimotion__get_creative_transcript"
+  - "mcp__motion__get_auth_context"
+  - "mcp__motion__get_workspace_brand"
+  - "mcp__motion__get_glossary_values"
+  - "mcp__motion__get_creative_insights"
+  - "mcp__motion__get_creative_transcript"
 model: opus
 ---
 
@@ -44,9 +44,9 @@ If no asset is provided, ask the user what they want reviewed.
    - Brand guidelines: pull from `get_workspace_brand`
 2. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/SKILL.md` for methodology.
 3. Use `default_date_preset` from settings as the datePreset for all calls unless the user specified a date range.
-3. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/concept-standards.md` for quality bar.
-4. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/insight-quality.md` for insight quality standards.
-5. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/evaluation-framework.md` for the 4-Question Evaluation Framework, metric pattern correlations, Ready/Iterate/Rethink call, and multi-persona feedback methodology.
+4. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/concept-standards.md` for quality bar.
+5. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/insight-quality.md` for insight quality standards.
+6. Read `${CLAUDE_SKILL_DIR}/../creative-strategist/references/evaluation-framework.md` for the 4-Question Evaluation Framework, metric pattern correlations, Ready/Iterate/Rethink call, and multi-persona feedback methodology.
 
 ---
 

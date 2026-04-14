@@ -1,0 +1,36 @@
+name: Auto-bump plugin version
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Plugin/**"
+      - "!Plugin/.claude-plugin/plugin.json"
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[version-bump]')"
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump patch version
+        run: |
+          cd Plugin/.claude-plugin
+          VERSION=$(jq -r '.version' plugin.json)
+          IFS='.' read -r major minor patch <<< "$VERSION"
+          NEW_VERSION="$major.$minor.$((patch + 1))"
+          jq --arg v "$NEW_VERSION" '.version = $v' plugin.json > tmp.json && mv tmp.json plugin.json
+          echo "Bumped version: $VERSION -> $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Plugin/.claude-plugin/plugin.json
+          git diff --cached --quiet && echo "No version change needed" && exit 0
+          git commit -m "chore: bump plugin version to ${{ env.NEW_VERSION }} [version-bump]"
+          git push
