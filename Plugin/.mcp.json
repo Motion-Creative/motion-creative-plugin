@@ -1,6 +1,8 @@
 {
-  "motion": {
-    "type": "http",
-    "url": "https://projects.motionapp.com/mcp"
+  "mcpServers": {
+    "motion": {
+      "type": "http",
+      "url": "https://projects.motionapp.com/mcp"
+    }
   }
 }
