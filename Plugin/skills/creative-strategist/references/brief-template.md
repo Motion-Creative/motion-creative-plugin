@@ -88,10 +88,10 @@ Use when working from brand context, performance data, concepts, or strategic di
 
 - Purpose: How to measure whether this creative worked
 - Rules:
-  - Which insightTypes to watch (goalMetric, HOOK, SCALING)
+  - Which metrics to watch (goalMetric, hook rate via thumbstop_ratio, hold rate via video_thruplay_ratio, SCALING)
   - What thresholds define success (e.g., "goalMetric above account average")
   - When to evaluate (e.g., "after $500 spend" or "7 days of delivery")
-  - What to diagnose if it underperforms (e.g., "if HOOK is low, test a different opening; if HOOK is high but goalMetric is poor, rework the body")
+  - What to diagnose if it underperforms (e.g., "if hook rate is low, test a different opening; if hook rate is high but goalMetric is poor, rework the body")
 
 ---
 

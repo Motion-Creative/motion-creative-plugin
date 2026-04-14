@@ -82,7 +82,7 @@ Transform any input into structured, briefable ad concepts grounded in performan
 3. `get_workspace_brand(workspaceId)` — brand positioning, voice, constraints, creative do's/don'ts
 4. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset="LAST_30_DAYS", limit=10)` — efficiency leaders by workspace goal metric
 5. `get_creative_insights(workspaceId, insightType="SCALING", datePreset="LAST_30_DAYS", limit=10)` — what's scaling
-6. `get_creative_insights(workspaceId, insightType="HOOK", datePreset="LAST_30_DAYS", limit=10)` — best hooks
+6. For hook rate leaders: filter SPEND results (call #1) to video creatives and sort by `thumbstop_ratio` descending. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING.
 7. `get_glossary_values(workspaceId, includeCreativeIds=true)` — creative taxonomy
 8. `get_demographic_breakdown(workspaceId)` — audience insights
 

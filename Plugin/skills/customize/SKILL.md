@@ -106,7 +106,7 @@ If `get_workspace_brand` returned brand info, use it to pre-fill. Then ask the u
 
 "Are there specific metrics you always want to see first, or any you want excluded from analysis?"
 - **Primary metrics**: Always show these first (e.g., ROAS, CPA)
-- **Secondary metrics**: Show when going deeper (e.g., HOOK, CTR_ALL)
+- **Secondary metrics**: Show when going deeper (e.g., hook rate, hold rate, CTR_ALL)
 - **Exclude metrics**: Never show these (e.g., irrelevant conversion types)
 
 If the user doesn't have preferences, leave these empty — skills will auto-detect based on creative format and campaign objective.
@@ -137,7 +137,7 @@ primary_kpi: "ROAS"
 
 # ── Secondary KPIs ──
 secondary_kpis:
-  - "HOOK"
+  - "hook_rate"  # Uses thumbstop_ratio from API
   - "CPA"
 
 # ── Competitors ──

@@ -85,11 +85,11 @@ If any required input is missing, ask the user before proceeding.
 Dispatch all in parallel:
 1. `get_auth_context()` — resolve workspace
 2. `get_workspace_brand(workspaceId)` — brand voice, positioning, creative do's/don'ts
-3. `get_creative_insights(workspaceId, insightType="HOOK", datePreset="LAST_30_DAYS", limit=10)` — top hooks in the account
+3. `get_creative_insights(workspaceId, insightType="SPEND", datePreset="LAST_30_DAYS", limit=20, insightGroups=["defaultKpiMetrics", "motion"])` — top creatives by spend. We pull SPEND (not HOOK) because the HOOK insightType returns the same ranking as SCALING and misses proven high-spend performers. After receiving results, filter to video creatives and sort by `thumbstop_ratio` to find the actual best hook performers.
 4. `get_glossary_values(workspaceId, includeCreativeIds=true)` — hook taxonomy tags
 
-Then for the top 3-5 video creatives from hook results:
-5. `get_creative_transcript(creativeEntityId, creativeOrigin)` — extract the actual hooks word-for-word
+Then sort the video creatives by `thumbstop_ratio` descending and take the top 5:
+5. `get_creative_transcript(creativeEntityId, creativeOrigin)` — extract the actual hooks word-for-word from the top 5 by thumbstop rate
 
 ---
 
@@ -98,7 +98,7 @@ Then for the top 3-5 video creatives from hook results:
 Before generating new hooks, understand the workspace's proven patterns:
 
 ### 2a. Extract Existing Hooks
-From transcripts, pull the first 1-3 seconds of each top performer. Identify:
+From transcripts of the top 5 video creatives by thumbstop rate (hook rate), pull the first 1-3 seconds of each. Identify:
 - What psychological trigger does each use?
 - What awareness stage does each target?
 - What makes each hook specific (names a moment, uses a number, calls out an identity)?

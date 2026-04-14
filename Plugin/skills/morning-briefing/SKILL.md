@@ -58,7 +58,7 @@ Daily creative delta briefing — what changed day-over-day that the team should
 6. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset="LAST_7_DAYS", limit=10)`
 
 **Hook signals:**
-7. `get_creative_insights(workspaceId, "HOOK", datePreset="YESTERDAY", limit=10)`
+7. Use the SPEND results from call #3 above — filter to video creatives and sort by `thumbstop_ratio` to find hook rate leaders. Do NOT use insightType="HOOK" as it returns the same ranking as SCALING.
 
 **Note:** If YESTERDAY returns empty or very limited data (common early in the day), fall back to comparing LAST_7_DAYS against LAST_30_DAYS. Note the adjusted window in the briefing header.
 
@@ -81,7 +81,7 @@ Compare yesterday vs. 7-day data to identify what changed:
 - **Newly scaling:** Creatives appearing in yesterday's scaling list but not in the 7-day top — they're just starting to gain traction
 - **Declining:** Creatives in the 7-day top performers but absent from or dropping in yesterday's data — they're losing steam
 - **Spend shifts:** Where budget moved — which creatives gained share, which lost it
-- **Hook changes:** Significant thumbstop rate changes — new creatives hooking well, or established ones losing grip
+- **Hook rate changes:** Compare thumbstop_ratio between yesterday's and 7-day data — new creatives hooking well, or established ones losing grip. Present as "hook rate" to the user.
 
 ### Competitor Deltas
 - **New launches:** Competitor creatives launched in the last 7 days
@@ -93,7 +93,7 @@ Not everything that changed is worth reporting. Focus on:
 - Top-spending creatives with notable goalMetric movement — budget at risk
 - New creatives that immediately started scaling — a possible winner
 - Competitor launches that represent a new approach (not just more of the same)
-- Any creative with significant hook rate change — the first signal of fatigue or resonance
+- Any creative with significant thumbstop_ratio change (present as "hook rate") — the first signal of fatigue or resonance
 
 If nothing significant changed, say so: "Stable day — no major movements. Current scaling winners are holding." A quiet briefing is better than manufactured urgency.
 

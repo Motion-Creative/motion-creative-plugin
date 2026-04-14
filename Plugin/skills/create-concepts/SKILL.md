@@ -86,7 +86,7 @@ Read the creative-strategist skill, `references/concept-standards.md`, and `refe
 
 2. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset="LAST_30_DAYS", limit=10)` — efficiency leaders by workspace goal metric
 3. `get_creative_insights(workspaceId, "SCALING", datePreset="LAST_30_DAYS", limit=10)` — what's growing
-4. `get_creative_insights(workspaceId, "HOOK", datePreset="LAST_30_DAYS", limit=10)` — what hooks viewers
+4. For hook rate leaders: filter SPEND results (call #1) to video creatives and sort by `thumbstop_ratio` descending. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING.
 5. `get_glossary_values(workspaceId, includeCreativeIds=true)` — creative taxonomy with creative mappings
 
 **Competitor reference:**

@@ -75,7 +75,7 @@ Read the creative-strategist skill and `references/performance-metrics.md` for m
 
 2. `get_creative_insights(workspaceId, insightType="SCALING", datePreset, limit)` — what's gaining/losing allocation
 3. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset, limit)` — efficiency leaders by workspace goal metric
-4. `get_creative_insights(workspaceId, insightType="HOOK", datePreset, limit)` — thumbstop rate leaders
+4. For hook rate leaders: filter SPEND results (call #1) to video creatives and sort by `thumbstop_ratio` descending. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING and misses high-spend proven performers.
 5. `get_demographic_breakdown(workspaceId, datePreset)` — age/gender performance
 6. `get_glossary_values(workspaceId)` — creative taxonomy categories
 
@@ -89,13 +89,13 @@ If `--metric` is specified, ensure that metric is included and prioritized in th
 
 For each creative appearing across the results, collect:
 - Its rank/position in each metric query it appeared in
-- Key performance values (spend, goalMetric, hook rate, and other relevant metrics)
+- Key performance values (spend, goalMetric, hook rate via thumbstop_ratio, hold rate via video_thruplay_ratio, and other relevant metrics)
 - Whether it's scaling, stable, or declining
 - **Its campaign and ad set context** — `campaignName`, `campaignIds`, `adsetName`, `adsetIds`
 
 Cross-reference to identify:
 - **All-rounders:** Creatives that appear in top results across multiple metrics
-- **Specialists:** High on one metric but absent from others (e.g., high HOOK but not in goalMetric top — hooks but doesn't convert)
+- **Specialists:** High on one metric but absent from others (e.g., high hook rate but not in goalMetric top — hooks but doesn't convert)
 - **Hidden gems:** Strong goalMetric but low spend — underexploited
 
 ### 3a-ii. Map Campaign & Ad Set Structure

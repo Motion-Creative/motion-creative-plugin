@@ -58,7 +58,7 @@ If hook and product aren't provided, ask before proceeding.
 → Extract `goalMetric` and `spendThreshold` from the response. Use goalMetric for all efficiency-sorted calls.
 
 3. `get_workspace_brand(workspaceId)` — brand voice, positioning, creative constraints
-4. `get_creative_insights(workspaceId, insightType="HOOK", datePreset="LAST_30_DAYS", limit=10)` — top-performing hooks
+4. For hook rate leaders: filter SPEND results (call #1) to video creatives and sort by `thumbstop_ratio` descending. Do NOT use insightType="HOOK" — it returns the same ranking as SCALING.
 5. `get_creative_insights(workspaceId, insightType=goalMetric, datePreset="LAST_30_DAYS", limit=10)` — efficiency leaders by workspace goal metric
 6. `get_glossary_values(workspaceId)` — taxonomy (especially UGC-related categories)
 7. `get_demographic_breakdown(workspaceId)` — who's responding
