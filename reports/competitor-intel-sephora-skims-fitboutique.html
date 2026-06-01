@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitive Intelligence Report — Sephora / SKIMS / FitBoutique</title>
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #17171a;
+    --surface2: #1e1e22;
+    --border: #2a2a2f;
+    --text: #e4e4e7;
+    --text-muted: #8b8b96;
+    --accent: #7c5cfc;
+    --accent2: #c084fc;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --blue: #60a5fa;
+    --pink: #f472b6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 48px 24px; }
+  .header { margin-bottom: 48px; }
+  .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .meta { color: var(--text-muted); font-size: 13px; }
+  .brand-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+  .brand-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .brand-card h3 { font-size: 18px; margin-bottom: 4px; }
+  .brand-card .followers { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { background: var(--surface2); border-radius: 8px; padding: 10px; }
+  .stat .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+  .stat .value { font-size: 20px; font-weight: 700; }
+  .stat .value.green { color: var(--green); }
+  .stat .value.amber { color: var(--amber); }
+  .stat .value.blue { color: var(--blue); }
+  .stat .value.pink { color: var(--pink); }
+
+  .section { margin-bottom: 48px; }
+  .section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .section h2 span { color: var(--accent2); }
+
+  .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .comparison-table th { text-align: left; padding: 10px 12px; color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  .comparison-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .comparison-table tr:last-child td { border-bottom: none; }
+  .comparison-table .brand-col { font-weight: 600; white-space: nowrap; }
+
+  .bar-chart { margin: 16px 0; }
+  .bar-row { display: flex; align-items: center; margin-bottom: 6px; }
+  .bar-label { width: 140px; font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 24px; background: var(--surface2); border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; min-width: 28px; }
+  .bar-fill.sephora { background: linear-gradient(90deg, #f472b6, #ec4899); }
+  .bar-fill.skims { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+  .bar-fill.fitboutique { background: linear-gradient(90deg, #34d399, #059669); }
+
+  .insight-box { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 16px 0; }
+  .insight-box .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent2); margin-bottom: 4px; }
+  .insight-box p { font-size: 14px; }
+
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .format-pill { background: var(--surface2); border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+  .format-pill .name { font-size: 13px; }
+  .format-pill .pct { font-size: 14px; font-weight: 700; color: var(--accent2); }
+
+  .hook-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .hook-card .brand-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent2); margin-bottom: 6px; }
+  .hook-card .transcript { font-size: 14px; font-style: italic; color: var(--text); line-height: 1.5; }
+  .hook-card .meta-info { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+  .landing-table { width: 100%; font-size: 13px; }
+  .landing-table td { padding: 6px 10px; }
+  .landing-table .url { color: var(--blue); word-break: break-all; }
+  .landing-table .count { text-align: right; font-weight: 600; color: var(--text-muted); }
+
+  .takeaway { background: linear-gradient(135deg, rgba(124,92,252,0.1), rgba(192,132,252,0.1)); border: 1px solid rgba(124,92,252,0.3); border-radius: 12px; padding: 24px; margin-top: 16px; }
+  .takeaway h3 { font-size: 16px; margin-bottom: 12px; color: var(--accent2); }
+  .takeaway ul { padding-left: 20px; }
+  .takeaway li { margin-bottom: 8px; font-size: 14px; }
+
+  .split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) {
+    .brand-row, .split-section { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge.video { background: rgba(96,165,250,0.2); color: var(--blue); }
+  .badge.image { background: rgba(244,114,182,0.2); color: var(--pink); }
+  .badge.rapid { background: rgba(251,191,36,0.2); color: var(--amber); }
+  .badge.massive { background: rgba(52,211,153,0.2); color: var(--green); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Competitive Intelligence Report</h1>
+    <div class="meta">Sephora / SKIMS / FitBoutique &mdash; Ad Library Analysis &mdash; Generated April 13, 2026 &mdash; Active creatives from Meta Ad Library</div>
+  </div>
+
+  <!-- Brand Overview Cards -->
+  <div class="brand-row">
+    <div class="brand-card">
+      <h3>Sephora</h3>
+      <div class="followers">42.9M followers &middot; @sephora</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="label">Active Ads</div><div class="value pink">516</div></div>
+        <div class="stat"><div class="label">Total Library</div><div class="value">3,955</div></div>
+        <div class="stat"><div class="label">Format Mix</div><div class="value" style="font-size:13px"><span class="badge video">69% Video</span></div></div>
+        <div class="stat"><div class="label">Avg Lifespan</div><div class="value" style="font-size:13px"><span class="badge rapid">4 days</span></div></div>
+      </div>
+    </div>
+    <div class="brand-card">
+      <h3>SKIMS</h3>
+      <div class="followers">7.3M followers &middot; @skims</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="label">Active Ads</div><div class="value green">957</div></div>
+        <div class="stat"><div class="label">Total Library</div><div class="value">5,663</div></div>
+        <div class="stat"><div class="label">Format Mix</div><div class="value" style="font-size:13px"><span class="badge image">60% Image</span></div></div>
+        <div class="stat"><div class="label">Avg Lifespan</div><div class="value" style="font-size:13px"><span class="badge rapid">5 days</span></div></div>
+      </div>
+    </div>
+    <div class="brand-card">
+      <h3>FitBoutique</h3>
+      <div class="followers">18.7K followers &middot; @fitboutique</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="label">Active Ads</div><div class="value amber">24</div></div>
+        <div class="stat"><div class="label">Total Library</div><div class="value">71</div></div>
+        <div class="stat"><div class="label">Format Mix</div><div class="value" style="font-size:13px"><span class="badge video">58% Video</span></div></div>
+        <div class="stat"><div class="label">Avg Lifespan</div><div class="value" style="font-size:13px">8 days</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="tag">Key Signal</div>
+    <p>All three brands rotate creatives aggressively (4-8 day average lifespan), but at vastly different scales. SKIMS runs nearly 1,000 active ads simultaneously &mdash; the largest library in this set by 2x. Sephora tests fast and kills fast with video-heavy UGC. FitBoutique is a micro-advertiser with minimal creative variation.</p>
+  </div>
+
+  <!-- Section: Format Strategy -->
+  <div class="section">
+    <h2>1. <span>Format Strategy</span></h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 14px;">Active creative format breakdown based on Meta Ad Library data.</p>
+
+    <h3 style="font-size: 15px; margin-bottom: 12px; color: var(--text);">Sephora &mdash; Top Visual Formats (% of active video+image)</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Demo</div><div class="bar-track"><div class="bar-fill sephora" style="width:28%">28%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Yapper / Talking Head</div><div class="bar-track"><div class="bar-fill sephora" style="width:12%">12%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Headline Static</div><div class="bar-track"><div class="bar-fill sephora" style="width:12%">12%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Before & After</div><div class="bar-track"><div class="bar-fill sephora" style="width:9%">9%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Testimonial</div><div class="bar-track"><div class="bar-fill sephora" style="width:8%">8%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Cinematic B-Roll</div><div class="bar-track"><div class="bar-fill sephora" style="width:7%">7%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Montage</div><div class="bar-track"><div class="bar-fill sephora" style="width:6%">6%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Slideshow</div><div class="bar-track"><div class="bar-fill sephora" style="width:6%">6%</div></div></div>
+    </div>
+
+    <h3 style="font-size: 15px; margin: 24px 0 12px; color: var(--text);">SKIMS &mdash; Top Visual Formats</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Headline Static</div><div class="bar-track"><div class="bar-fill skims" style="width:19%">19%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Try-On</div><div class="bar-track"><div class="bar-fill skims" style="width:12%">12%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Demo</div><div class="bar-track"><div class="bar-fill skims" style="width:11%">11%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Offer-First Banner</div><div class="bar-track"><div class="bar-fill skims" style="width:9%">9%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Product Image</div><div class="bar-track"><div class="bar-fill skims" style="width:9%">9%</div></div></div>
+      <div class="bar-row"><div class="bar-label">UGC Overlay</div><div class="bar-track"><div class="bar-fill skims" style="width:7%">7%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Montage</div><div class="bar-track"><div class="bar-fill skims" style="width:6%">6%</div></div></div>
+      <div class="bar-row"><div class="bar-label">Lifestyle Image</div><div class="bar-track"><div class="bar-fill skims" style="width:5%">5%</div></div></div>
+    </div>
+
+    <div class="insight-box">
+      <div class="tag">Format Divergence</div>
+      <p><strong>Sephora</strong> is betting hard on video demos (28%) and UGC talking heads &mdash; content where a real person demonstrates the product. <strong>SKIMS</strong> leads with headline statics (19%) and try-on content (12%) &mdash; visually driven, minimal copy, letting the product speak. SKIMS also runs 9% offer-first banners (price/deal-forward), a tactic Sephora barely uses.</p>
+    </div>
+  </div>
+
+  <!-- Section: Creative Strategy -->
+  <div class="section">
+    <h2>2. <span>Creative Strategy Comparison</span></h2>
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Dimension</th><th>Sephora</th><th>SKIMS</th><th>FitBoutique</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="brand-col">Primary Approach</td>
+          <td>UGC-led product demos. Creator shows product, talks through benefits, demonstrates application. Brand acts as curator showcasing partner brands (Glossier, Too Faced, Makeup by Mario).</td>
+          <td>Visual-first lifestyle imagery. Minimal text, aspirational aesthetics. Product shown on body in clean settings. Heavy collection-based campaigns.</td>
+          <td>Single-product focus. Reformer pilates equipment with studio/lifestyle imagery. Repetitive messaging across variants.</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Hook Strategy</td>
+          <td>Spoken hooks via UGC creators: product introduction in first 3 sec. Example: "These are Too Faced's new chocolate-defining pencils. This pencil really does it all."</td>
+          <td>Visual hooks &mdash; no spoken dialogue. Product on body in first frame. Music-driven with text overlays. Headlines do the heavy lifting: "SKIMS Swim", "SKIMS Lightweight Cotton".</td>
+          <td>Copy-driven hooks in ad text: "The reformer you've been saving for is finally here." Videos appear to be product showcase/lifestyle with music.</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Copy Style</td>
+          <td>Ultra-minimal ad copy. Often just a single tagline. Let the video do the selling. Headlines announce product: "New! Glossier You Soie"</td>
+          <td>Promotional + collection-naming. Copy focuses on deals ("5 for $35") and collection names. Headlines are brand-first: "SKIMS [Collection Name]"</td>
+          <td>Aspirational + benefit-led. "Studio quality. Home convenience. Real results." Uses hashtags for organic reach. Repetitive across variants.</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Landing Strategy</td>
+          <td>68% of traffic through DoubleClick tracking (agency-managed campaigns). Remainder to sephora.com product pages + savings events.</td>
+          <td>Collection pages dominate: Swim (138 ads), NikeSKIMS (133), Bras (95), Lightweight Cotton (95), Wedding Shop (79). Deep catalog linking.</td>
+          <td>Single collection page (/collections/reformer_pilates) and individual product pages. Also driving to Instagram profile.</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Testing Velocity</td>
+          <td><span class="badge rapid">Extreme</span> &mdash; 4 day avg lifespan. Rapid test-and-kill cycle. 516 active at once with 3,955 total historical.</td>
+          <td><span class="badge rapid">Very High</span> &mdash; 5 day avg, but nearly 1,000 active simultaneously. Massive parallel testing at scale.</td>
+          <td>Moderate &mdash; 8 day avg. Small library (24 active). Testing variants of the same creative rather than distinct concepts.</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Current Campaigns</td>
+          <td>Glossier You Soie (fragrance launch), Too Faced pencils, Makeup by Mario Ethereal Eyes return, Spring Savings Event</td>
+          <td>Swim 2026 (biggest push), NikeSKIMS collab, Lightweight Cotton (deal-led), Easter Collection, Spring Shop, Wedding Shop</td>
+          <td>Home reformer pilates equipment &mdash; single product line with no seasonal or campaign variation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section: SKIMS Deep Dive -->
+  <div class="section">
+    <h2>3. <span>SKIMS Brand Intelligence</span> (Deep Dive)</h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 14px;">Full brand context from Motion AI analysis.</p>
+
+    <div class="split-section">
+      <div>
+        <h3 style="font-size: 15px; margin-bottom: 12px;">Brand Positioning</h3>
+        <p style="font-size: 14px; margin-bottom: 16px;">SKIMS positions as the go-to for comfortable yet stylish essentials &mdash; loungewear, lingerie, and shapewear that inspire confidence. Elevates everyday comfort into premium self-care. Tone is modern, confident, inclusive, and aspirational with warmth.</p>
+
+        <h3 style="font-size: 15px; margin-bottom: 12px;">Key Messaging Angles</h3>
+        <ul style="font-size: 14px; padding-left: 20px;">
+          <li>Comfort and confidence can coexist</li>
+          <li>Body positivity and inclusivity</li>
+          <li>Everyday luxury for real life</li>
+          <li>Effortless style for modern women</li>
+          <li>Natural beauty, not overly sexualized</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size: 15px; margin-bottom: 12px;">Landing Page Focus (Active Ads)</h3>
+        <table class="landing-table">
+          <tr><td class="url">Swim Collection</td><td class="count">138 ads</td></tr>
+          <tr><td class="url">NikeSKIMS Collab</td><td class="count">133 ads</td></tr>
+          <tr><td class="url">Bras</td><td class="count">95 ads</td></tr>
+          <tr><td class="url">Lightweight Cotton</td><td class="count">95 ads</td></tr>
+          <tr><td class="url">Wedding Shop</td><td class="count">79 ads</td></tr>
+          <tr><td class="url">Everyday Cotton</td><td class="count">40 ads</td></tr>
+          <tr><td class="url">Fits Everybody</td><td class="count">27 ads</td></tr>
+        </table>
+
+        <h3 style="font-size: 15px; margin: 16px 0 12px;">Creative Constraints</h3>
+        <ul style="font-size: 14px; padding-left: 20px;">
+          <li>No explicit nudity or sexualized depictions</li>
+          <li>Minimalist, high-end aesthetic (plain backgrounds)</li>
+          <li>Product clearly displayed and worn as intended</li>
+          <li>Visual storytelling over heavy copy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 20px;">
+      <div class="tag">Competitive Moat</div>
+      <p>SKIMS differentiates from Spanx (compression-focused), Savage X Fenty (bold/provocative), and Victoria's Secret (legacy glamour) by owning "comfortable luxury that doesn't suffocate." Customer voice emphasizes softness and natural confidence over sculpting. The brand runs 957 active ads &mdash; suggesting they're outspending competitors on creative testing at massive scale.</p>
+    </div>
+  </div>
+
+  <!-- Section: Hook & Transcript Analysis -->
+  <div class="section">
+    <h2>4. <span>Hook & Transcript Patterns</span></h2>
+    <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 14px;">Analysis of video ad openings from transcripts.</p>
+
+    <div class="hook-card">
+      <div class="brand-tag">Sephora &mdash; Too Faced Demo (30s)</div>
+      <div class="transcript">"These are Too Faced's new chocolate-defining pencils. This pencil really does it all. Lips, brows, face."</div>
+      <div class="meta-info">Hook pattern: Product introduction + versatility claim in first 3 seconds. Demo format with UGC creator. Closes with category + brand: "Too Faced chocolate-defining pencil."</div>
+    </div>
+
+    <div class="hook-card">
+      <div class="brand-tag">Sephora &mdash; Glossier Fragrance (15s)</div>
+      <div class="transcript">"Me Glossier You Soir. You smell good."</div>
+      <div class="meta-info">Hook pattern: Ultra-short, sensory-first. Brand + product in opening line. Emotional payoff ("You smell good") as the CTA.</div>
+    </div>
+
+    <div class="hook-card">
+      <div class="brand-tag">SKIMS &mdash; All Videos Analyzed</div>
+      <div class="transcript">No spoken dialogue. Music/visual-only creative.</div>
+      <div class="meta-info">Hook pattern: Visual-first. Product on body in frame 1, lifestyle context, text overlay with collection name. SKIMS intentionally avoids UGC talking-head format &mdash; the product IS the hook.</div>
+    </div>
+
+    <div class="hook-card">
+      <div class="brand-tag">FitBoutique &mdash; Reformer Videos</div>
+      <div class="transcript">No spoken dialogue. Music/product showcase.</div>
+      <div class="meta-info">Hook pattern: Product hero shot with lifestyle context. Relies entirely on ad copy text for messaging. Copy hook: "The reformer you've been saving for is finally here."</div>
+    </div>
+
+    <div class="insight-box">
+      <div class="tag">Hook Strategy Insight</div>
+      <p>Two distinct schools emerge: <strong>Sephora</strong> uses spoken UGC hooks (creator introduces product in 0-3s) while <strong>SKIMS</strong> relies on visual hooks (product on body, no dialogue). Both work &mdash; the choice tracks with product type. Beauty products need demonstration; fashion/apparel sells on aspiration. For Motion's SaaS context, Sephora's demo-led approach maps better (screen recordings, product walkthroughs).</p>
+    </div>
+  </div>
+
+  <!-- Section: Headline & Copy Patterns -->
+  <div class="section">
+    <h2>5. <span>Headline & Copy Patterns</span></h2>
+
+    <div class="split-section">
+      <div>
+        <h3 style="font-size: 15px; margin-bottom: 12px;">Sephora Headlines</h3>
+        <div class="format-grid">
+          <div class="format-pill"><span class="name">"New! [Brand] [Product]"</span></div>
+          <div class="format-pill"><span class="name">"[Product] IS BACK"</span></div>
+          <div class="format-pill"><span class="name">"[Benefit], [Benefit]"</span></div>
+          <div class="format-pill"><span class="name">"Spring Savings Event"</span></div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 12px;">Pattern: Brand-forward product announcements. "New!" prefix is dominant. Headlines serve as catalog navigation, not emotional hooks. The video does the emotional work.</p>
+      </div>
+      <div>
+        <h3 style="font-size: 15px; margin-bottom: 12px;">SKIMS Headlines</h3>
+        <div class="format-grid">
+          <div class="format-pill"><span class="name">"SKIMS [Collection]"</span></div>
+          <div class="format-pill"><span class="name">"SKIMS Swim"</span></div>
+          <div class="format-pill"><span class="name">"SKIMS Lightweight Cotton"</span></div>
+          <div class="format-pill"><span class="name">"SKIMS Easter Collection"</span></div>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 12px;">Pattern: Brand name + collection name. Every single headline starts with "SKIMS". Zero benefit language in headlines. Copy does the promotional work: "5 for $35 deal on new Lightweight Cotton panties!"</p>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 20px;">
+      <div class="tag">Copy Insight for Motion</div>
+      <p>Both mega-brands use extremely simple headlines. Sephora leads with novelty ("New!"), SKIMS leads with brand name. Neither uses question hooks, pain-point language, or long-form headlines in their ad creative. The lesson: when you have strong brand equity and visual creative, the headline is a wayfinding label, not a persuasion device. For challenger brands (like Motion), headlines need to work harder since brand recognition is lower.</p>
+    </div>
+  </div>
+
+  <!-- Section: Scale & Velocity -->
+  <div class="section">
+    <h2>6. <span>Scale & Testing Velocity</span></h2>
+
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Metric</th><th>Sephora</th><th>SKIMS</th><th>FitBoutique</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="brand-col">Active Ads</td>
+          <td>516</td>
+          <td><strong>957</strong> (largest)</td>
+          <td>24</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Total Library</td>
+          <td>3,955</td>
+          <td><strong>5,663</strong> (largest)</td>
+          <td>71</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Active Ratio</td>
+          <td>13%</td>
+          <td>17%</td>
+          <td>34%</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Avg Days Active</td>
+          <td>4 days</td>
+          <td>5 days</td>
+          <td>8 days</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Max Days Active</td>
+          <td>14 days</td>
+          <td>8 days</td>
+          <td>13 days</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Image : Video</td>
+          <td>30 : 70</td>
+          <td>60 : 40</td>
+          <td>42 : 58</td>
+        </tr>
+        <tr>
+          <td class="brand-col">Testing Style</td>
+          <td>Rapid test & kill. High volume UGC pipeline across partner brands.</td>
+          <td>Massive parallel testing. Multiple variants per collection across formats.</td>
+          <td>Minimal variation. Same concept, slight copy tweaks. Variant testing, not concept testing.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Takeaways -->
+  <div class="section">
+    <h2>7. <span>Strategic Takeaways</span></h2>
+
+    <div class="takeaway">
+      <h3>Signals to Watch</h3>
+      <ul>
+        <li><strong>SKIMS is going all-in on Swim and NikeSKIMS</strong> &mdash; 271 active ads across just two collections. This is a major seasonal bet with massive budget behind it.</li>
+        <li><strong>Sephora is a UGC machine</strong> &mdash; nearly 70% video, with demo and talking-head formats dominating. They're running partner brand ads (Glossier, Too Faced, Makeup by Mario) as their own, acting as a platform.</li>
+        <li><strong>Both mega-brands rotate in under a week</strong> &mdash; this signals they're optimizing for frequency cap management and creative fatigue prevention at scale.</li>
+        <li><strong>SKIMS runs 9% offer-first banners</strong> &mdash; a promotional tactic that Sephora doesn't lean into. This suggests SKIMS converts on price messaging, not just aspiration.</li>
+        <li><strong>FitBoutique is under-testing</strong> &mdash; only 24 active ads with repetitive messaging. Opportunity to diversify concepts and formats.</li>
+      </ul>
+    </div>
+
+    <div class="takeaway" style="margin-top: 16px;">
+      <h3>Patterns Worth Borrowing (for Motion)</h3>
+      <ul>
+        <li><strong>Sephora's UGC demo hook:</strong> Product introduction in 0-3 seconds, then show it working. Maps to screen recording demos for SaaS.</li>
+        <li><strong>SKIMS' collection-based campaign structure:</strong> Instead of one-off ads, group creatives around a "collection" (feature set, use case). This creates coherent campaigns.</li>
+        <li><strong>Sephora's "New!" prefix pattern:</strong> Simple, attention-catching, creates urgency. Works for feature launches.</li>
+        <li><strong>SKIMS' visual-first, copy-second approach:</strong> Let the product do the talking. For Motion, this means leading with the dashboard/insight, not the description.</li>
+        <li><strong>Both brands' aggressive rotation:</strong> No creative should run more than 7-10 days without refresh. Build a pipeline, not a single hero ad.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px;">
+    Generated by Motion Creative Plugin &middot; Data from Meta Ad Library via Motion &middot; April 13, 2026
+  </div>
+
+</div>
+</body>
+</html>
